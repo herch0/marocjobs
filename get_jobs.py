@@ -184,6 +184,19 @@ def rekrute_ma():
                 if match:
                     recruteur = match.group(1)
         print(date_annonce, titre_annonce + " / " + recruteur)
+        # POST data
+        # _STATE_:
+        # __EVENTARGUMENT:2
+        # __EVENTTARGET:page
+        # bDirigeants:
+        # recruiterid:
+        # hidSortOrder:DESC
+        # hidSortBy:jobOffer_PublicationDate
+        # hidPage:1
+
+        # pour aller à une autree page, on doit envoyer une requête à la page qu'on
+        # récupéré plus haut, avec les paramètres citès en commentaire. le numéro de
+        # la page est passé au paramètre hidPage
 
 print('======== Annonces emploi.ma ========')
 emploi_ma()

@@ -29,7 +29,6 @@ def emploi_ma(page = 0):
     emploi_ma(page+1)
 
 def rekrute_ma(page = 1, url_redirect = '', cookies = None):
-    print('Page', page)
 #POST data
 # _STATE_:
 # __EVENTARGUMENT:

@@ -6,7 +6,8 @@ import datetime
 today = datetime.date.today()
 
 def emploi_ma(page = 0):
-    if page != 0:
+    print(page)
+    if page == 0:
         params = {'filters': 'tid:31 tid:58'}
     else:
         params = {'filters': 'tid:31 tid:58', 'page': page}
@@ -29,14 +30,6 @@ def emploi_ma(page = 0):
     emploi_ma(page+1)
 
 def rekrute_ma(page = 1, url_redirect = '', cookies = None):
-#POST data
-# _STATE_:
-# __EVENTARGUMENT:
-# __EVENTTARGET:search
-# jobOffer_Sector_2:
-# jobOffer_Position[]:13
-# jobOffer_Region[]:4
-# searchquery:
     url = 'http://www.rekrute.com/offres-recherche-avancee.html'
     if (page == 1):
         post_data = {'_STATE_': '', '__EVENTARGUMENT': '', '__EVENTTARGET': 'search', 'jobOffer_Sector_2': '', 'jobOffer_Position[]': '13', 'jobOffer_Region[]': '4', 'searchquery': ''}
@@ -54,6 +47,8 @@ def rekrute_ma(page = 1, url_redirect = '', cookies = None):
 
     tr_annonces = html.find_all('tr', attrs={'height': '32'})
     for tr in tr_annonces:
+        if (tr.has_attr('bgcolor')):
+            continue
         date_annonce = ''
         titre_annonce = ''
         recruteur = ''
@@ -62,8 +57,9 @@ def rekrute_ma(page = 1, url_redirect = '', cookies = None):
             if len(td.contents) > 0 and td.contents[0].name == 'table':
                 table = td.contents[0]
                 colonnes = table.find('tr').find_all('td')
-                date_annonce = colonnes[1].string.strip() + '/' + str(today.year)
-                date_annonce = datetime.datetime.strptime(date_annonce, '%d/%m/%Y')
+#date_annonce = colonnes[1].string.strip() + '/' + str(today.year)
+                date_annonce = colonnes[1].string.strip()
+                date_annonce = datetime.datetime.strptime(date_annonce, '%d/%m/%y')
                 if (date_annonce.date() < today):
                     return
                 titre_annonce = colonnes[2].find('a').contents[0]
@@ -74,7 +70,7 @@ def rekrute_ma(page = 1, url_redirect = '', cookies = None):
                 #endif
             #end elif
         #end for
-        print(date_annonce.date.isoformat(), titre_annonce + " / " + recruteur)
+        print(date_annonce.date().isoformat(), titre_annonce + " / " + recruteur)
     #end for
     rekrute_ma(page + 1, url_redirect, cookies)
 
